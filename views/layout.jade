@@ -1,0 +1,41 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/lib/css/bootstrap.css')
+    link(rel='stylesheet', href='/lib/css/font-awesome.css')
+    link(rel='stylesheet', href='/lib/css/jplayer.blue.monday.css')
+    link(rel='stylesheet', href='/lib/css/bootstrap-tagsinput.css')
+    link(rel='stylesheet', href='/css/search.css')
+    link(rel='stylesheet', href='/css/tags.css')
+    link(rel='stylesheet', href='/css/style.css')
+  body(ng-app='calls')
+    header(class='navbar navbar-fixed-top navbar-default')
+      div(class='container')
+        div(class='navbar-header')
+          a(class='navbar-brand', href='/') Clarify Slack
+        if (user)
+          .collapse.navbar-collapse
+            ul.nav.navbar-nav
+              li
+                a(href='/') Records
+              li
+                a(href='/search') Search
+            ul.nav.navbar-nav.navbar-right
+              li
+                if (user)
+                  a(href='/sign_out') Sign out
+                else
+                  a(href='/sign_in') Sign in
+
+    .content
+      block content
+
+    script(src='/lib/js/jquery.js')
+    script(src='/lib/js/lodash.js')
+    script(src='/lib/js/jquery.jplayer.js')
+    script(src='/lib/js/bootstrap.js')
+    script(src='/lib/js/bootstrap-tagsinput.js')
+    script(src='/lib/js/socket.io.js')
+    script(src='/js/utils/time.js')
+    block scripts
+

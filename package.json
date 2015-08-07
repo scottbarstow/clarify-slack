@@ -1,0 +1,46 @@
+{
+  "name": "clarify-slack",
+  "version": "0.0.1",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scottbarstow/clarify-slack.git"
+  },
+  "author": "",
+  "license": "none",
+  "bugs": {
+    "url": "https://github.com/scottbarstow/clarify-slack/issues"
+  },
+  "homepage": "https://github.com/scottbarstow/clarify-slack",
+  "dependencies": {
+    "async": "^1.3.0",
+    "body-parser": "^1.13.1",
+    "bower": "^1.4.1",
+    "clarifyio": "0.0.3",
+    "express": "^4.13.0",
+    "express-session": "^1.11.3",
+    "jade": "^1.11.0",
+    "lodash": "^3.10.0",
+    "morgan": "^1.6.1",
+    "passport": "^0.2.2",
+    "passport-local": "^1.0.0",
+    "socket.io": "^1.3.6",
+    "superagent": "^1.2.0"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-bower-task": "^0.4.0",
+    "grunt-concurrent": "^2.0.0",
+    "grunt-contrib-copy": "^0.8.0",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-node-inspector": "^0.2.0",
+    "grunt-nodemon": "^0.4.0",
+    "grunt-npm-install": "^0.2.0",
+    "load-grunt-tasks": "^3.2.0",
+    "mongoose": "^4.0.6"
+  }
+}

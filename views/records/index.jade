@@ -1,0 +1,45 @@
+extends ../layout
+block content
+  .container
+    h1 Records
+    .well
+      each tag in tags
+        a.label.label-info(href="/?tag=" + tag, class='tag')= tag
+
+    table#records.table.table-hover
+      thead
+        tr
+          th Name
+          th Audio
+          th Cost
+          th Date Added
+          th
+        tbody
+        each record in records
+          tr
+            td= record.name
+            td
+              audio(src=record.url, controls, preload="none")
+            td=record.processing_cost
+            td= record.addedAt
+            td.actions
+              a.open(href="/show/#{record._id}", data-id="#{record._id}", style=record.indexedAt ? "" : "display:none") View
+              a.delete(href="#" data-id="#{record._id}") Delete
+    a.btn.btn-default(href="/new") Add
+    input#userId(type="hidden", value=user._id)
+block scripts
+  script(src="/js/index.js")
+  script#recordTemplate(type="text/template")
+    | <tr>
+    |   <td><%- name %></td>
+    |   <td>
+    |     <audio src="<%- url %>" controls preload="none"></audio>
+    |   </td>
+    |   <td class="cost" data-id="<%- _id %>"></td>
+    |   <td><%- addedAt %></td>
+    |   <td class="actions">
+    |     <a href="/show/<%- _id %>" data-id="<%- _id %>" class="open" style="display: none">View</a>
+    |     <a href="" class="delete" data-id="<%- _id %>">Delete</a>
+    |   </td>
+
+

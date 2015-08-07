@@ -1,0 +1,15 @@
+extends layout
+block content
+  .row
+    .col-sm-offset-4.col-sm-4.center
+      .window
+        h3.text-center Sign In
+        form(action='/sign_in', method='post')
+          .form-inputs
+            .form-group
+              input.form-control(type='text', name='username', placeholder='Username')
+            .form-group
+              input.form-control(type='password', name='password', placeholder='Password')
+          .form-actions.text-center
+            input(type='submit',value='Sign In', class='btn btn-default')
+

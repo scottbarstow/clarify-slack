@@ -1,0 +1,22 @@
+{
+  "name": "clarify-slack",
+  "version": "0.0.1",
+  "homepage": "https://github.com/scottbarstow/clarify-slack",
+  "license": "none",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "font-awesome": "~4.3.0",
+    "jplayer": "~2.9.2",
+    "jquery": "~2.1.4",
+    "lodash": "~2.4.1",
+    "socket.io-client": "~1.3.6"
+  }
+}
