@@ -61,7 +61,7 @@ router.get('/sign_out', function(req, res){
   res.redirect('/');
 });
 
-router.get('/slack/test', function(req, res){
+router.post('/slack/test', function(req, res){
   slack.test(req, res);
 });
 
