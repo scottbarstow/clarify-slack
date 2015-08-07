@@ -7,6 +7,9 @@ var config = {
   },
   clarify: {
     API_KEY: 'Clarify API key'
+  },
+  slack: {
+    TOKEN: 'Your Team token'
   }
 };
 

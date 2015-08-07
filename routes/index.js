@@ -5,6 +5,7 @@ var router = express.Router();
 var records = require('../controllers/records_controller');
 var slack = require('../controllers/slack_controller');
 var passport = require('passport');
+var config = require('../config');
 
 var ensureAuthenticated = function(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
@@ -15,6 +16,13 @@ var ensureAuthenticatedAjax = function(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
   res.status(401).json('User is not authorized.');
 };
+
+var authSlackTeam = function(req, res, next) {
+  if (req.body.token === config.slack.TOKEN) {
+    return next();
+  }
+  res.status(401).json('Slack Team is not authorized');
+}
 
 router.get('/', ensureAuthenticated, function(req, res){
   records.index(req, res);
@@ -61,7 +69,8 @@ router.get('/sign_out', function(req, res){
   res.redirect('/');
 });
 
-router.post('/slack/test', function(req, res){
+router.post('/slack/test', authSlackTeam, function(req, res){
+  console.log(req.body);
   slack.test(req, res);
 });
 

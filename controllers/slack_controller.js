@@ -1,8 +1,5 @@
 'use strict';
 
 exports.test = function(req, res) {
-  console.log(req.body);
-  res.sendStatus(200);
-}
-
-
+  res.status(200).send('Hi ' + req.body.user_name);
+};
