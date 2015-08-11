@@ -18,11 +18,11 @@ var ensureAuthenticatedAjax = function(req, res, next) {
 };
 
 var authSlackTeam = function(req, res, next) {
-  if (req.body.token === config.slack.TOKEN) {
+  if (req.body.token === config.slack.COMMAND_TOKEN) {
     return next();
   }
   res.status(401).json('Slack Team is not authorized');
-}
+};
 
 router.get('/', ensureAuthenticated, function(req, res){
   records.index(req, res);
@@ -69,9 +69,19 @@ router.get('/sign_out', function(req, res){
   res.redirect('/');
 });
 
-router.post('/slack/test', authSlackTeam, function(req, res){
-  console.log(req.body);
-  slack.test(req, res);
+router.post('/slack/call', authSlackTeam, function(req, res){
+    console.log(req.body);
+    slack.call(req, res);
+});
+
+router.post('/slack/status', function(req, res){
+    console.log(req.body);
+    slack.status(req, res);
+});
+
+router.post('/slack/accepted', function(req, res){
+    console.log(req.body);
+    slack.status(req, res);
 });
 
 module.exports = router;
