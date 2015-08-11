@@ -21,11 +21,17 @@ html
               li
                 a(href='/search') Search
             ul.nav.navbar-nav.navbar-right
-              li
                 if (user)
-                  a(href='/sign_out') Sign out
+                    li
+                        a(href='/profile') Profile
+                    li
+                        a(href='/sign_out') Sign out
                 else
                   a(href='/sign_in') Sign in
+        else
+          ul.nav.navbar-nav.navbar-right
+              li
+                a(href='/sign_up') Sign Up
 
     .content
       block content

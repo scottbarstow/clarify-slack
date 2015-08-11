@@ -2,8 +2,10 @@
 
 var express = require('express');
 var router = express.Router();
+var User = require('../models/user');
 var records = require('../controllers/records_controller');
 var slack = require('../controllers/slack_controller');
+var users = require('../controllers/user_controller');
 var passport = require('passport');
 var config = require('../config');
 
@@ -18,10 +20,14 @@ var ensureAuthenticatedAjax = function(req, res, next) {
 };
 
 var authSlackTeam = function(req, res, next) {
-  if (req.body.token === config.slack.COMMAND_TOKEN) {
-    return next();
-  }
-  res.status(401).json('Slack Team is not authorized');
+    User.find({'profile.slackUser': req.body.user_name}, function(err, users){
+        if(!err && users.length == 1){
+            req.user = users[0];
+            return next();
+        } else {
+            res.status(401).json('Slack Team is not authorized');
+        }
+    });
 };
 
 router.get('/', ensureAuthenticated, function(req, res){
@@ -59,6 +65,14 @@ router.put('/:id', ensureAuthenticatedAjax, function(req, res){
 router.get('/sign_in', function(req, res){
   res.render('sign_in', { user: req.user });
 });
+
+router.get('/sign_up', function(req, res){
+    res.render('sign_up');
+});
+router.post('/sign_up', users.signup);
+
+router.get('/profile', ensureAuthenticated, users.profile);
+router.post('/profile', ensureAuthenticated, users.saveProfile);
 
 router.post('/sign_in', passport.authenticate('local', { failureRedirect: '/sign_in'}), function(req, res){
   res.redirect('/');

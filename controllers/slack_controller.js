@@ -3,21 +3,23 @@ var request = require('request');
 var twilio = require('twilio');
 
 exports.call = function(req, res) {
-    var slackInfo = req.body;
+    var slackInfo = req.body,
+        user = req.user;
+
     if (slackInfo.text && slackInfo.text.length > 0){
         request.get('https://slack.com/api/users.info', {
             qs: {
-                token: config.slack.API_TOKEN,
+                token: user.profile.slackToken,
                 user: slackInfo.user_id
             }
         }, function(err, response, body){
             var info = JSON.parse(body),
-                user = info.user;
+                u = info.user;
 
-            if (info.ok && user.profile.phone && user.profile.phone.length > 0){
-                var client = twilio(config.twilio.SID, config.twilio.TOKEN);
+            if (info.ok && u.profile.phone && u.profile.phone.length > 0){
+                var client = twilio(user.profile.twilioSid, user.profile.twilioToken);
                 client.calls.create({
-                    from: user.profile.phone,
+                    from: u.profile.phone,
                     to: slackInfo.text,
                     method: "POST",
                     statusCallbackMethod: "POST",

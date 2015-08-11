@@ -6,14 +6,6 @@ var config = {
     },
     clarify: {
         API_KEY: 'Clarify API key'
-    },
-    slack: {
-        COMMAND_TOKEN: 'Slack /clarifyer command token',
-        API_TOKEN: 'Slack Web API token'
-    },
-    twilio: {
-        TOKEN: 'Twilio Web API token',
-        SID: 'Twilio SID'
     }
 };
 

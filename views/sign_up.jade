@@ -1,0 +1,16 @@
+extends layout
+block content
+  .row
+    .col-sm-offset-4.col-sm-4.center
+      .window
+        h2 Sign Up
+        form(action='/sign_up', method='post')
+          .form-inputs
+            .form-group
+              input.form-control(type='text', name='username', placeholder='Username')
+            .form-group
+              input.form-control(type='password', name='password', placeholder='Password')
+            .form-group
+              input.form-control(type='password', name='repeatPassword', placeholder='Repeat password')
+          .form-actions.text-center
+            input(type='submit',value='Sign Up', class='btn btn-default')

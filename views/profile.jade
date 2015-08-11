@@ -1,0 +1,23 @@
+extends layout
+block content
+    .row
+        .col-sm-offset-3.col-sm-6.center
+            .window
+                h2 User Profile
+                form(action='/profile', method='post')
+                    .form-inputs
+                        fieldset
+                            legend Slack
+                        .form-group
+                            input.form-control(type='text', name='slackUser', placeholder='Slack UserName', value='#{profile.slackUser}')
+                        .form-group
+                            input.form-control(type='text', name='slackToken', placeholder='Slack Web API Token', value='#{profile.slackToken}')
+                        fieldset
+                            legend Twilio
+                        .form-group
+                            input.form-control(type='text', name='twilioSid', placeholder='Twilio SID', value='#{profile.twilioSid}')
+                        .form-group
+                            input.form-control(type='text', name='twilioToken', placeholder='Twilio Web API Token', value='#{profile.twilioToken}')
+                    .form-actions.text-center
+                        input(type='hidden', name='userId', value='#{user._id}')
+                        input(type='submit',value='Save', class='btn btn-default')
