@@ -43,12 +43,17 @@ exports.call = function(req, res) {
     }
 };
 
-exports.status = function(req, res) {
-    console.log(req.body);
-    res.status(200).send(''); //.send('Hi ' + req.body.user_name + ' call sid:' + call.sid);
+exports.accepted = function(req, res) {
+    console.log('ACCEPTED:', req.body);
+    var resp = new twilio.TwimlResponse();
+    resp.say('Welcome to Clarify Slack!')
+      .dial(req.body.From);
+    res.type('text/xml');
+    res.send(resp.toString());
 };
 
-exports.accepted = function(req, res) {
-    console.log(req.body);
-    res.status(200).send(''); //.send('Hi ' + req.body.user_name + ' call sid:' + call.sid);
+
+exports.status = function(req, res) {
+    console.log('STATUS:', req.body);
+    res.send('');
 };

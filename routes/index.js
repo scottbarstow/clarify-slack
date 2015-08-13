@@ -89,13 +89,11 @@ router.post('/slack/call', authSlackTeam, function(req, res){
 });
 
 router.post('/slack/status', function(req, res){
-    console.log(req.body);
     slack.status(req, res);
 });
 
 router.post('/slack/accepted', function(req, res){
-    console.log(req.body);
-    slack.status(req, res);
+    slack.accepted(req, res);
 });
 
 module.exports = router;
