@@ -3,54 +3,52 @@
 var User = require('../models/user');
 
 exports.signup = function (req, res) {
-    var username = req.body.username;
-    var password = req.body.password;
-    var repeatPassword = req.body.repeatPassword;
+  var username = req.body.username;
+  var password = req.body.password;
+  var repeatPassword = req.body.repeatPassword;
 
-    User.find({username: username}, function (err, user) {
-        if (user.length > 0) {
-            req.flash('error', 'User with same username already exists.');
-            res.render('/sign_up');
-        } else {
-            if (password !== repeatPassword) {
-                req.flash('error', 'Passwords don\'t match.');
-                res.render('/sign_up');
-            } else {
-                User.create({
-                    username: username,
-                    password: password
-                }, function () {
-                    res.redirect('/sign_in');
-                });
-            }
-        }
-    });
+  User.find({username: username}, function (err, user) {
+    if (user.length > 0) {
+      req.flash('error', 'User with same username already exists.');
+      res.render('/sign_up');
+    } else {
+      if (password !== repeatPassword) {
+        req.flash('error', 'Passwords don\'t match.');
+        res.render('/sign_up');
+      } else {
+        User.create({
+          username: username,
+          password: password
+        }, function () {
+          res.redirect('/sign_in');
+        });
+      }
+    }
+  });
 };
 
 exports.profile = function (req, res) {
-    res.render('profile', {
-        user: req.user,
-        profile: req.user.profile
-    });
+  res.render('profile', {
+    user: req.user,
+    profile: req.user.profile
+  });
 };
 
 exports.saveProfile = function (req, res) {
-    User.findById(req.body.userId, function(err, user){
-        if (!err){
-            user.profile.slackToken = req.body.slackToken;
-            user.profile.slackUser = req.body.slackUser;
-            user.profile.twilioToken = req.body.twilioToken;
-            user.profile.twilioSid = req.body.twilioSid;
-            user.save();
-            res.render('profile', {
-                user: user,
-                profile: user.profile
-            });
-        } else {
-            res.render('profile', {
-                user: req.user,
-                profile: req.user.profile
-            });
-        }
-    });
+  User.findById(req.body.userId, function (err, user) {
+    if (!err) {
+      user.profile.slackUser = req.body.slackUser;
+      user.profile.phone = req.body.phone;
+      user.save();
+      res.render('profile', {
+        user: user,
+        profile: user.profile
+      });
+    } else {
+      res.render('profile', {
+        user: req.user,
+        profile: req.user.profile
+      });
+    }
+  });
 };
