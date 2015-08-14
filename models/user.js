@@ -23,7 +23,7 @@ var User = new mongoose.Schema({
     default: ['user']
   },
   profile: {
-    phone: {
+    slackToken: {
       type: String,
       default: ''
     },

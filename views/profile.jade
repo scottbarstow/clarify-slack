@@ -6,10 +6,13 @@ block content
         h2 User Profile
         form(action='/profile', method='post')
           .form-inputs
+            fieldset
+              legend Slack
             .form-group
               input.form-control(type='text', name='slackUser', placeholder='Slack UserName', value='#{profile.slackUser}')
             .form-group
-              input.form-control(type='text', name='phone', placeholder='Phone Number', value='#{profile.phone}')
+              input.form-control(type='text', name='slackToken', placeholder='Slack Web API Token', value='#{profile.slackToken}')
           .form-actions.text-center
             input(type='hidden', name='userId', value='#{user._id}')
             input(type='submit',value='Save', class='btn btn-default')
+          

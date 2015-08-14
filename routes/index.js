@@ -30,6 +30,17 @@ var authSlackTeam = function (req, res, next) {
   res.status(401).json('Slack Team is not authorized');
 };
 
+var authSlackUser = function(req, res, next) {
+  User.find({'profile.slackUser': req.body.user_name}, function(err, users){
+    if(!err && users.length === 1){
+      req.user = users[0];
+      return next();
+    } else {
+      res.status(401).json('Slack User is not authorized');
+    }
+  });
+};
+
 router.get('/', ensureAuthenticated, function (req, res) {
   records.index(req, res);
 });
@@ -67,7 +78,7 @@ router.get('/sign_out', function (req, res) {
 router.get('/profile', ensureAuthenticated, users.profile);
 router.post('/profile', ensureAuthenticated, users.saveProfile);
 
-router.post('/slack/call', authSlackTeam, function (req, res) {
+router.post('/slack/call', authSlackTeam, authSlackUser, function (req, res) {
   slack.call(req, res);
 });
 
