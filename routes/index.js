@@ -83,9 +83,14 @@ router.post('/slack/call', authSlackTeam, authSlackUser, function (req, res) {
   slack.call(req, res);
 });
 
-router.post('/twilio/status', function (req, res) {
-  twilio.status(req, res);
+router.post('/twilio/call/status', function (req, res) {
+  twilio.callStatus(req, res);
 });
+
+router.post('/twilio/dial/status', function (req, res) {
+  twilio.dialStatus(req, res);
+});
+
 
 router.post('/twilio/accepted', function (req, res) {
   twilio.accepted(req, res);

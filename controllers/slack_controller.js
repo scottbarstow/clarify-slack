@@ -24,9 +24,9 @@ exports.call = function(req, res) {
           to: u.profile.phone,
           method: "POST",
           statusCallbackMethod: "POST",
-          StatusCallback: config.BASE_URL + "/twilio/status",
-          Url: config.BASE_URL + "/twilio/accepted",
-          record: "true"
+          StatusCallback: config.BASE_URL + "/twilio/call/status",
+          statusCallbackEvent: ["initiated", "ringing", "answered", "completed"],
+          Url: config.BASE_URL + "/twilio/accepted"
         }, function(err, call) {
           if (err){
             return res.status(200).send(slackInfo.user_name + ', we could not get a call: ' + err.message);
