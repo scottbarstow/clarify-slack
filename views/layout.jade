@@ -4,9 +4,7 @@ html
     link(rel='stylesheet', href='/lib/css/bootstrap.css')
     link(rel='stylesheet', href='/lib/css/font-awesome.css')
     link(rel='stylesheet', href='/lib/css/jplayer.blue.monday.css')
-    link(rel='stylesheet', href='/lib/css/bootstrap-tagsinput.css')
     link(rel='stylesheet', href='/css/search.css')
-    link(rel='stylesheet', href='/css/tags.css')
     link(rel='stylesheet', href='/css/style.css')
   body(ng-app='calls')
     header(class='navbar navbar-fixed-top navbar-default')
@@ -17,7 +15,7 @@ html
           .collapse.navbar-collapse
             ul.nav.navbar-nav
               li
-                a(href='/') Records
+                a(href='/') Calls
               li
                 a(href='/search') Search
             ul.nav.navbar-nav.navbar-right
@@ -40,7 +38,6 @@ html
     script(src='/lib/js/lodash.js')
     script(src='/lib/js/jquery.jplayer.js')
     script(src='/lib/js/bootstrap.js')
-    script(src='/lib/js/bootstrap-tagsinput.js')
     script(src='/lib/js/socket.io.js')
     script(src='/js/utils/time.js')
     block scripts

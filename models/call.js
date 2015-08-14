@@ -11,6 +11,39 @@ var Call = new mongoose.Schema({
   },
   twilio_sid: {
     type: String
+  },
+  url: {
+    type: String,
+    trim: true
+  },
+  data: {
+    type: String
+  },
+  duration: {
+    type: Number,
+    default: 0,
+    get: function(value){
+      return value.toHHMMSS();
+    }
+  },
+  processing_cost: {
+    type: Number,
+    get: function(value) {
+      return '$' + value;
+    }
+  },
+  bundle_id: {
+    type: String
+  },
+  date: {
+    type: Date
+  },
+  indexedAt: {
+    type: Date
+  },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User'
   }
 });
 

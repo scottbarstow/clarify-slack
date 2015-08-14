@@ -3,9 +3,10 @@
 var express = require('express');
 var router = express.Router();
 var config = require('../config');
-var records = require('../controllers/records_controller');
+var calls = require('../controllers/calls_controller');
 var slack = require('../controllers/slack_controller');
 var twilio = require('../controllers/twilio_controller');
+var clarify = require('../controllers/clarify_controller');
 var users = require('../controllers/user_controller');
 var passport = require('passport');
 var User = require('../models/user');
@@ -43,19 +44,27 @@ var authSlackUser = function(req, res, next) {
 };
 
 router.get('/', ensureAuthenticated, function (req, res) {
-  records.index(req, res);
+  calls.index(req, res);
 });
 
-router.post('/notify', function (req, res) {
-  records.notify(req, res);
+router.post('/clarify/notify', function (req, res) {
+  clarify.notify(req, res);
 });
 
-router.get('/show/:id', ensureAuthenticated, function (req, res) {
-  records.show(req, res);
+router.get('/calls/show/:id', ensureAuthenticated, function (req, res) {
+  calls.show(req, res);
 });
 
-router.put('/:id', ensureAuthenticatedAjax, function (req, res) {
-  records.update(req, res);
+router.put('/calls/:id', ensureAuthenticatedAjax, function (req, res) {
+  calls.update(req, res);
+});
+
+router.get('/search', ensureAuthenticated, function (req, res) {
+  res.render('calls/search', {user: req.user});
+});
+
+router.post('/search', ensureAuthenticated, function(req, res){
+  calls.search(req, res);
 });
 
 router.get('/sign_in', function (req, res) {
@@ -91,9 +100,8 @@ router.post('/twilio/dial/status', function (req, res) {
   twilio.dialStatus(req, res);
 });
 
-
-router.post('/twilio/accepted', function (req, res) {
-  twilio.accepted(req, res);
+router.post('/twilio/call/accepted', function (req, res) {
+  twilio.callAccepted(req, res);
 });
 
 module.exports = router;

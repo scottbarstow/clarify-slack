@@ -25,8 +25,7 @@ exports.call = function(req, res) {
           method: "POST",
           statusCallbackMethod: "POST",
           StatusCallback: config.BASE_URL + "/twilio/call/status",
-          statusCallbackEvent: ["initiated", "ringing", "answered", "completed"],
-          Url: config.BASE_URL + "/twilio/accepted"
+          Url: config.BASE_URL + "/twilio/call/accepted"
         }, function(err, call) {
           if (err){
             return res.status(200).send(slackInfo.user_name + ', we could not get a call: ' + err.message);
@@ -39,10 +38,10 @@ exports.call = function(req, res) {
           res.status(200).send('Call has started');
         });
       } else {
-        res.status(200).send(slackInfo.user_name + ', we could not get your profile from Slack.');
+        res.status(400).send(slackInfo.user_name + ', we could not get your profile from Slack.');
       }
     });
   } else {
-    res.status(200).send(slackInfo.user_name + ', please type a phone number you want to call.');
+    res.status(400).send(slackInfo.user_name + ', please type a phone number you want to call.');
   }
 };

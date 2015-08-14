@@ -1,42 +1,39 @@
 extends ../layout
 block content
   .container
-    h1 Records
-    .well
-      each tag in tags
-        a.label.label-info(href="/?tag=" + tag, class='tag')= tag
+    h1 Calls
 
-    table#records.table.table-hover
+    table#calls.table.table-hover
       thead
         tr
-          th Name
+          th To
           th Audio
           th Cost
-          th Date Added
+          th Date
           th
         tbody
-        each record in records
+        each call in calls
           tr
-            td= record.name
+            td= call.to
             td
-              audio(src=record.url, controls, preload="none")
-            td=record.processing_cost
-            td= record.addedAt
+              audio(src=call.url, controls, preload="none")
+            td= call.processing_cost
+            td= call.date
             td.actions
-              a.open(href="/show/#{record._id}", data-id="#{record._id}", style=record.indexedAt ? "" : "display:none") View
-              a.delete(href="#" data-id="#{record._id}") Delete
+              a.open(href="/show/#{call._id}", data-id="#{call._id}", style=call.indexedAt ? "" : "display:none") View
+              a.delete(href="#" data-id="#{call._id}") Delete
     a.btn.btn-default(href="/new") Add
     input#userId(type="hidden", value=user._id)
 block scripts
   script(src="/js/index.js")
-  script#recordTemplate(type="text/template")
+  script#callTemplate(type="text/template")
     | <tr>
-    |   <td><%- name %></td>
+    |   <td><%- to %></td>
     |   <td>
     |     <audio src="<%- url %>" controls preload="none"></audio>
     |   </td>
     |   <td class="cost" data-id="<%- _id %>"></td>
-    |   <td><%- addedAt %></td>
+    |   <td><%- date %></td>
     |   <td class="actions">
     |     <a href="/show/<%- _id %>" data-id="<%- _id %>" class="open" style="display: none">View</a>
     |     <a href="" class="delete" data-id="<%- _id %>">Delete</a>

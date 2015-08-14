@@ -2,7 +2,7 @@ extends ../layout
 block content
   .container.show
     #view
-      h2=record.name
+      h2=call.name
       a(href="#") Rename
 
     #edit
@@ -14,22 +14,15 @@ block content
       .col-sm-2
         label URL:
       .col-sm-10
-        a(href=record.url) Link
+        a(href=call.url) Link
     .row
       .col-sm-2
         label Duration:
       .col-sm-10
-        p= record.duration
+        p= call.duration
     .row
       .col-sm-2
         label Processing Cost:
       .col-sm-10
-        p= record.processing_cost
-    .row
-      .col-sm-2
-        label Tags:
-      .col-sm-10
-        input#tags(type="text", data-role="tagsinput", value=tags)
-    input#record(type="hidden", value=record._id)
-block scripts
-  script(src='/js/tags.js')
+        p= call.processing_cost
+    input#call(type="hidden", value=call._id)
