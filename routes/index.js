@@ -8,6 +8,7 @@ var slack = require('../controllers/slack_controller');
 var twilio = require('../controllers/twilio_controller');
 var users = require('../controllers/user_controller');
 var passport = require('passport');
+var User = require('../models/user');
 
 var ensureAuthenticated = function (req, res, next) {
   if (req.isAuthenticated()) {
@@ -31,9 +32,9 @@ var authSlackTeam = function (req, res, next) {
 };
 
 var authSlackUser = function(req, res, next) {
-  User.find({'profile.slackUser': req.body.user_name}, function(err, users){
-    if(!err && users.length === 1){
-      req.user = users[0];
+  User.findOne({'profile.slackUser': req.body.user_name}, function(err, user){
+    if (user) {
+      req.user = user;
       return next();
     } else {
       res.status(401).json('Slack User is not authorized');
