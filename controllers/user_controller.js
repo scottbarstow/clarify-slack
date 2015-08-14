@@ -38,7 +38,7 @@ exports.saveProfile = function (req, res) {
   User.findById(req.body.userId, function (err, user) {
     if (!err) {
       user.profile.slackUser = req.body.slackUser;
-      user.profile.phone = req.body.phone;
+      user.profile.slackToken = req.body.slackToken;
       user.save();
       res.render('profile', {
         user: user,
