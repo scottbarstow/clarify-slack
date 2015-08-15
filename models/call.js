@@ -13,8 +13,7 @@ var Call = new mongoose.Schema({
     type: String
   },
   url: {
-    type: String,
-    trim: true
+    type: String
   },
   data: {
     type: String

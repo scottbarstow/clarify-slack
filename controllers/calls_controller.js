@@ -12,23 +12,6 @@ exports.index = function(req, res) {
   });
 };
 
-exports.add = function(req, res) {
-  Call.create({
-    url: req.body.url,
-    addedAt: Date.now(),
-    user: req.user
-  }, function(err, call){
-    clarifyClient.createBundle({
-      name: call.name,
-      media_url: req.body.url,
-      notify_url: config.BASE_URL + '/notify',
-      external_id: call._id,
-      metadata: JSON.stringify({callId: call._id})
-    });
-    res.redirect('/');
-  });
-};
-
 exports.remove = function(req, res) {
   Call.findById(req.params.id, function(err, call){
     if (call.bundle_id) {

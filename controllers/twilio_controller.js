@@ -1,6 +1,8 @@
 var config = require('../config');
 var twilio = require('twilio');
 var Call = require('../models/call');
+var clarify = require('clarifyio');
+var clarifyClient = new clarify.Client('api.clarify.io', config.clarify.API_KEY);
 
 exports.callAccepted = function(req, res) {
   console.log('ACCEPTED:', req.body);
@@ -19,6 +21,20 @@ exports.callAccepted = function(req, res) {
 
 exports.callStatus = function(req, res) {
   console.log('CALL:', req.body);
+
+  var callInfo = req.body;
+  if (req.body.CallStatus === 'completed') {
+    Call.findOne({twilio_sid: callInfo.CallSid}, function(err, call){
+      clarifyClient.createBundle({
+        name: call.to,
+        media_url: call.url,
+        notify_url: config.BASE_URL + '/clarify/notify',
+        external_id: call._id,
+        metadata: JSON.stringify({callId: call._id})
+      });
+    });
+  }
+
   var twiml = new twilio.TwimlResponse();
   res.type('text/xml');
   res.send(twiml.toString());
@@ -26,6 +42,13 @@ exports.callStatus = function(req, res) {
 
 exports.dialStatus = function(req, res) {
   console.log('DIAL:', req.body);
+
+  var callInfo = req.body;
+  Call.findOne({twilio_sid: callInfo.CallSid}, function(err, call){
+    call.url = callInfo.RecordingUrl;
+    call.save();
+  });
+
   var twiml = new twilio.TwimlResponse();
   res.type('text/xml');
   res.send(twiml.toString());
