@@ -7,7 +7,9 @@ var  _ = require('lodash');
 var Call = require('../models/call');
 
 exports.index = function(req, res) {
+  console.log(req.user);
   Call.find({user: req.user}, function(err, calls){
+    console.log(err, calls);
     res.render('calls/index', {calls: calls, user: req.user});
   });
 };

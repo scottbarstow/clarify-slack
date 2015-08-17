@@ -33,9 +33,10 @@ exports.call = function(req, res) {
           Call.create({
             from: u.profile.phone,
             to: slackInfo.text,
+            date: Date.now(),
             twilio_sid: call.sid,
             slack_channel_id: slackInfo.channel_id,
-            user: req.user
+            user: user
           });
           res.status(200).send('Call has started');
         });

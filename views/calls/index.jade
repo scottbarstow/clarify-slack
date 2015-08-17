@@ -22,8 +22,6 @@ block content
             td.actions
               a.open(href="/show/#{call._id}", data-id="#{call._id}", style=call.indexedAt ? "" : "display:none") View
               a.delete(href="#" data-id="#{call._id}") Delete
-    a.btn.btn-default(href="/new") Add
-    input#userId(type="hidden", value=user._id)
 block scripts
   script(src="/js/index.js")
   script#callTemplate(type="text/template")

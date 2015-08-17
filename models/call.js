@@ -31,7 +31,7 @@ var Call = new mongoose.Schema({
   processing_cost: {
     type: Number,
     get: function(value) {
-      return '$' + value;
+      return value ? '$' + value : '';
     }
   },
   bundle_id: {
