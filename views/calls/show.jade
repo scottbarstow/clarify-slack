@@ -1,15 +1,6 @@
 extends ../layout
 block content
   .container.show
-    #view
-      h2=call.name
-      a(href="#") Rename
-
-    #edit
-      h2.hide
-        form
-          input(type="text", value=record.name)
-          button.btn.btn-primary(type="submit") Save
     .row
       .col-sm-2
         label URL:

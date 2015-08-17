@@ -59,6 +59,10 @@ router.put('/calls/:id', ensureAuthenticatedAjax, function (req, res) {
   calls.update(req, res);
 });
 
+router.delete('/calls/:id', ensureAuthenticatedAjax, function(req, res){
+  calls.remove(req, res);
+});
+
 router.get('/search', ensureAuthenticated, function (req, res) {
   res.render('calls/search', {user: req.user});
 });

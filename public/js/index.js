@@ -5,7 +5,7 @@ $(function(){
     if (window.confirm("Are you sure you want to delete this call?")) {
       $.ajax({
         method: 'DELETE',
-        url: '/' + id
+        url: '/calls/' + id
       }).done(function () {
         window.location.href = '/';
       });

@@ -20,8 +20,9 @@ block content
             td= call.processing_cost
             td= call.date
             td.actions
-              a.open(href="/show/#{call._id}", data-id="#{call._id}", style=call.indexedAt ? "" : "display:none") View
+              a.open(href="/calls/show/#{call._id}", data-id="#{call._id}", style=call.indexedAt ? "" : "display:none") View
               a.delete(href="#" data-id="#{call._id}") Delete
+    input#userId(type="hidden", value=user._id)              
 block scripts
   script(src="/js/index.js")
   script#callTemplate(type="text/template")
@@ -33,7 +34,7 @@ block scripts
     |   <td class="cost" data-id="<%- _id %>"></td>
     |   <td><%- date %></td>
     |   <td class="actions">
-    |     <a href="/show/<%- _id %>" data-id="<%- _id %>" class="open" style="display: none">View</a>
+    |     <a href="/calls/show/<%- _id %>" data-id="<%- _id %>" class="open" style="display: none">View</a>
     |     <a href="" class="delete" data-id="<%- _id %>">Delete</a>
     |   </td>
 
