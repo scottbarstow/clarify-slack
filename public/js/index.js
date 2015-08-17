@@ -26,6 +26,7 @@ $(function(){
   });
 
   socket.on('call.added', function(call){
+    console.log('call.added', call);
     var callTemplate = $("#callTemplate").html();
     var $tr  = $(_.template(callTemplate, call));
     $('#calls tbody').append($tr);

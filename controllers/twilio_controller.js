@@ -42,11 +42,13 @@ exports.callStatus = function(req, res) {
 
 exports.dialStatus = function(req, res) {
   console.log('DIAL:', req.body);
+  var io = req.app.get('io');
 
   var callInfo = req.body;
   Call.findOne({twilio_sid: callInfo.CallSid}, function(err, call){
-    call.url = callInfo.RecordingUrl;
+    call.url = callInfo.RecordingUrl;    
     call.save();
+    io.sockets.in(call.user).emit('call.added', call);
   });
 
   var twiml = new twilio.TwimlResponse();

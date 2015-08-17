@@ -7,6 +7,7 @@ var Call = require('../models/call');
 exports.call = function(req, res) {
   var slackInfo = req.body;
   var user = req.user;
+  var io = req.app.get('io');
 
   if (slackInfo.text && slackInfo.text.length > 0){
     request.get('https://slack.com/api/users.info', {
