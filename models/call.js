@@ -12,6 +12,9 @@ var Call = new mongoose.Schema({
   twilio_sid: {
     type: String
   },
+  slack_channel_id: {
+    type: String
+  },
   url: {
     type: String
   },

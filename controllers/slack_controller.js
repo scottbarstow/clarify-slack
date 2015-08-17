@@ -5,8 +5,8 @@ var twilioClient = twilio(config.twilio.ACCOUNT_SID, config.twilio.AUTH_TOKEN);
 var Call = require('../models/call');
 
 exports.call = function(req, res) {
-  var slackInfo = req.body,
-    user = req.user;
+  var slackInfo = req.body;
+  var user = req.user;
 
   if (slackInfo.text && slackInfo.text.length > 0){
     request.get('https://slack.com/api/users.info', {
@@ -15,8 +15,8 @@ exports.call = function(req, res) {
         user: slackInfo.user_id
       }
     }, function(err, response, body){
-      var info = JSON.parse(body),
-        u = info.user;
+      var info = JSON.parse(body);
+      var u = info.user;
 
       if (info.ok && u.profile.phone && u.profile.phone.length > 0){
         twilioClient.calls.create({
@@ -34,6 +34,7 @@ exports.call = function(req, res) {
             from: u.profile.phone,
             to: slackInfo.text,
             twilio_sid: call.sid,
+            slack_channel_id: slackInfo.channel_id,
             user: req.user
           });
           res.status(200).send('Call has started');
