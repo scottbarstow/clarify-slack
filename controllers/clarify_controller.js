@@ -1,14 +1,17 @@
 'use strict';
 
+var config = require('../config');
 var request = require('request');
 var Call = require('../models/call');
+var clarify = require('clarifyio');
+var clarifyClient = new clarify.Client('api.clarify.io', config.clarify.API_KEY);
 
-var notifySlack = function(call) {
+var notifySlack = function(msg, token, channel) {
   request.get('https://slack.com/api/chat.postMessage', { 
     qs: {
-      token: call.user.profile.slackToken,
-      channel: call.slack_channel_id,
-      text: 'Your Call from ' + call.from + ' to ' + call.to + ' has been indexed and is ready for search. Type /clarifyer search to search the audio.',
+      token: token,
+      channel: channel,
+      text: msg,
       username: 'Clarifyer'
     }
   });
@@ -36,9 +39,23 @@ exports.notify = function(req, res) {
           call.data = JSON.stringify(req.body);
           call.duration = trackData.duration;        
           call.save();
-          notifySlack(call);
+          notifySlack('Your Call from ' + call.from + ' to ' + call.to + ' has been indexed and is ready for search. Type /clarifyer search to search the audio.',
+              call.user.profile.slackToken, call.slack_channel_id);
         }
       });
   }
   res.sendStatus(200);
+};
+
+exports.indexNotify = function(req, res) {
+    if (typeof req.body.bundle_processing_cost !== "undefined") {
+        clarifyClient.getMetadata(req.body.bundle_id, function (err, result) {
+            console.log(result);
+            if (!err){
+                notifySlack("Your call audio has been indexed. You can now search", result.data.token, result.data.channel);
+            }
+        });
+    }
+
+    res.sendStatus(200);
 };

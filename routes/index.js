@@ -47,18 +47,15 @@ router.get('/', ensureAuthenticated, function (req, res) {
   calls.index(req, res);
 });
 
-router.post('/clarify/notify', function (req, res) {
-  clarify.notify(req, res);
-});
+router.post('/clarify/notify', clarify.notify);
+router.post('/clarify/indexNotify', clarify.indexNotify);
 
 router.get('/calls/show/:id', ensureAuthenticated, function (req, res) {
   calls.show(req, res);
 });
-
 router.put('/calls/:id', ensureAuthenticatedAjax, function (req, res) {
   calls.update(req, res);
 });
-
 router.delete('/calls/:id', ensureAuthenticatedAjax, function(req, res){
   calls.remove(req, res);
 });
@@ -70,16 +67,13 @@ router.post('/search', ensureAuthenticated, function(req, res){
 router.get('/sign_in', function (req, res) {
   res.render('sign_in', {user: req.user});
 });
-
 router.get('/sign_up', function (req, res) {
   res.render('sign_up');
 });
 router.post('/sign_up', users.signup);
-
 router.post('/sign_in', passport.authenticate('local', {failureRedirect: '/sign_in'}), function (req, res) {
   res.redirect('/');
 });
-
 router.get('/sign_out', function (req, res) {
   req.logout();
   res.redirect('/');
@@ -88,18 +82,14 @@ router.get('/sign_out', function (req, res) {
 router.get('/profile', ensureAuthenticated, users.profile);
 router.post('/profile', ensureAuthenticated, users.saveProfile);
 
-router.post('/slack/call', authSlackTeam, authSlackUser, function (req, res) {
-  slack.call(req, res);
-});
+router.post('/slack/command', authSlackTeam, authSlackUser, slack.command);
 
 router.post('/twilio/call/status', function (req, res) {
   twilio.callStatus(req, res);
 });
-
 router.post('/twilio/dial/status', function (req, res) {
   twilio.dialStatus(req, res);
 });
-
 router.post('/twilio/call/accepted', function (req, res) {
   twilio.callAccepted(req, res);
 });
