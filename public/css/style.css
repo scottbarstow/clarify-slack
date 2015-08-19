@@ -19,3 +19,7 @@
 .content table td.actions a{
   margin-right: 5px;
 }
+
+.clear {
+  clear: both;
+}

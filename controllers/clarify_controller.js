@@ -3,6 +3,7 @@
 var config = require('../config');
 var request = require('request');
 var Call = require('../models/call');
+var _ = require('lodash');
 var clarify = require('clarifyio');
 var clarifyClient = new clarify.Client('api.clarify.io', config.clarify.API_KEY);
 
@@ -58,4 +59,55 @@ exports.indexNotify = function(req, res) {
     }
 
     res.sendStatus(200);
+};
+
+exports.view = function(req, response){
+    var bundleId = req.params.bundleId,
+        query = req.params.query;
+
+    clarifyClient.search({query: query, embed: 'metadata'}, function (err, res) {
+        if (!err){
+            var bundle = _.first(_.where(res._embedded.items, { id: bundleId }));
+            if (bundle){
+                var terms = (res.search_terms || []).map(function (t) {
+                    return t.term;
+                });
+
+                var index = res._embedded.items.indexOf(bundle);
+                var itemResult = res.item_results[index];
+                var hits = gatherHits(itemResult, terms);
+
+                clarifyClient.getTracks(bundleId, function(err, res){
+                    response.status(200).render('view', {
+                        user: req.user,
+                        model: {
+                            name: res.tracks[0].media_url,
+                            mediaUrl: res.tracks[0].media_url,
+                            bundleId: bundleId,
+                            duration: res.tracks[0].duration,
+                            created: res.tracks[0].created,
+                            hits: hits
+                        }
+                    });
+                })
+            }
+        }
+    });
+};
+
+var gatherHits = function (itemResult, terms) {
+    var hits = [];
+    (itemResult.term_results || []).forEach(function (tr, i) {
+        var term = terms[i] || '';
+        var matches = tr.matches || [];
+        matches.forEach(function (m) {
+            if (m.type === 'audio') {
+                m.hits.forEach(function (h) {
+                    h.term = term;
+                    hits.push(h);
+                });
+            }
+        });
+    });
+    return hits;
 };

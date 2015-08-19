@@ -36,10 +36,15 @@
   border-radius: 4px !important;
 }
 
-.jp-progress{
-  left: 0px !important;
-  top: 28px !important;
+.jp-audio .jp-progress{
+  left: 0 !important;
+  top: 0 !important;
   width: 100% !important;
+  position: relative;
+}
+
+.jp-audio .jp-interface {
+  height: auto;
 }
 
 .mark{
@@ -53,7 +58,7 @@
 }
 
 .player-controls{
-  margin-top: 22px;
+  margin-top: 10px;
 }
 
 .jp-time-holder{
@@ -62,9 +67,9 @@
 }
 
 .bundle-title{
-  font-size: 80%;
+  font-size: 60%;
   font-weight: bold;
-  margin-left: 4px;
+  word-break: break-all;
 }
 
 #searchForm{

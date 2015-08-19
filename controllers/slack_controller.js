@@ -5,6 +5,7 @@ var clarify = require('clarifyio');
 var twilioClient = twilio(config.twilio.ACCOUNT_SID, config.twilio.AUTH_TOKEN);
 var clarifyClient = new clarify.Client('api.clarify.io', config.clarify.API_KEY);
 var Call = require('../models/call');
+var _ = require('lodash');
 
 exports.command = function (req, res) {
     var slackInfo = req.body;
@@ -81,8 +82,19 @@ function search(query, req, res) {
                 return res.status(400).send("We couldn't perform a search. Please try again later.");
             }
 
-            console.log(res);
-            notifySlack(JSON.stringify(res), user.profile.slackToken, slackInfo.channel_id);
+            var msg = '*Your search term was found in the following: *\n';
+            _.each(res._embedded.items, function(item, i){
+                if (item.external_id){
+                    msg += '* <'+ config.BASE_URL + '/view/'+item.id+'/'+query + '|Call to ' + item.name + '>';
+                } else{
+                    msg += '* <'+ config.BASE_URL + '/view/'+item.id+'/'+query + '|Indexded URL>';
+                }
+
+                var second = res.item_results[i].term_results[0].matches[0].hits[0].start;
+                msg += ' at ' + second + ' seconds \n';
+            });
+
+            notifySlack(msg, user.profile.slackToken, slackInfo.channel_id);
         });
     } else {
         notifySlack(slackInfo.user_name + ', please type a search criteria.', user.profile.slackToken, slackInfo.channel_id);

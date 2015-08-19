@@ -1,0 +1,31 @@
+extends layout
+block content
+   .row
+      .col-sm-offset-2.col-sm-8.center
+         .window
+          h2 Record View
+          div(class="call-record")
+            div(class="jp-audio")
+                div(class="bundle-title") #{model.name}
+                div(class="jp-type-single")
+                    div(class="jp-gui jp-interface")
+                        div(class="jp-progress")
+                            div(class="jp-seek-bar")
+                                div(class="jp-play-bar")
+                div(class="btn-toolbar player-controls")
+                    div(class="btn-group btn-group-sm pull-right")
+                        a(class="btn-play btn btn-default")
+                            span(class="glyphicon glyphicon-play")
+                        a(class="btn-pause btn btn-default")
+                            span(class="glyphicon glyphicon-pause")
+                        a(class="btn-stop btn btn-default")
+                            span(class="glyphicon glyphicon-stop")
+                    div(class="jp-time-holder pull-left")
+                        span(class="current-time")
+                        span="/"
+                        span(class="duration")
+                    div(class="clear")
+            div(class="player")
+block scripts
+    script var item = !{JSON.stringify(model)}
+    script(src='/js/view.js')
