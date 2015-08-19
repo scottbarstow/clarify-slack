@@ -86,8 +86,8 @@ function search(query, req, res) {
             _.each(res._embedded.items, function(item, i){
                 if (item.external_id){
                     msg += '* <'+ config.BASE_URL + '/view/'+item.id+'/'+query + '|Call to ' + item.name + '>';
-                } else{
-                    msg += '* <'+ config.BASE_URL + '/view/'+item.id+'/'+query + '|Indexded URL>';
+                } else {
+                    msg += '* <'+ config.BASE_URL + '/view/'+item.id+'/'+query + '|Indexed URL>';
                 }
 
                 var second = res.item_results[i].term_results[0].matches[0].hits[0].start;
