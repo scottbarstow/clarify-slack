@@ -62,7 +62,12 @@ exports.indexNotify = function (req, res) {
 };
 
 exports.transcribeNotify = function (req, res) {
-  console.log(req.body);
+  var conversation = req.body.segments.map(function(segment){
+    var terms = segment.terms.map(function(item){
+      return item.term;
+    });
+    return segment.speaker + ': ' + terms.join(' ');
+  });
 
   res.sendStatus(200);
 };
