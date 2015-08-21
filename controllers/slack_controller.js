@@ -35,14 +35,25 @@ function call(number, req, res) {
   var user = req.user;
   var io = req.app.get('io');
 
-  request.get('https://slack.com/api/users.info', {
+  request.get('https://slack.com/api/users.list', {
     qs: {
-      token: user.profile.slackToken,
-      user: slackInfo.user_id
+      token: user.profile.slackToken
     }
   }, function (err, response, body) {
     var info = JSON.parse(body);
-    var u = info.user;
+    var originatingSlackUser;
+    if(info.ok){
+      var members = info.members;
+      originatingSlackUser = members.filter(function(u){return  u.name === slackInfo.user_name})[0];
+      // are we trying to call another slack user?
+      if(number.indexOf("@") > -1 ){
+        destinationSlackUser = members.filter(function(u){return u.name === number.substring(1).trim()})[0];
+        if(destinationSlackUser.profile && destinationSlackUser.profile.phone){
+          number = destinationSlackUser.profile.phone;
+        }
+      }
+    }
+    var u = originatingSlackUser;
 
     if (info.ok && u.profile.phone && u.profile.phone.length > 0) {
       twilioClient.calls.create({
