@@ -1,6 +1,9 @@
 var config = {
   BASE_URL: 'http://example.com',
   SESSION_SECRET: 'BIG DEAL',
+  SMTP_SERVER: 'smtp.mailgun.com',
+  SMTP_LOGIN: 'Your login',
+  SMTP_PASSWORD: 'Your password',
   mongodb: {
     URI: 'mongodb://localhost/clarify-slack'
   },

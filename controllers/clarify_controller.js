@@ -6,6 +6,8 @@ var Call = require('../models/call');
 var _ = require('lodash');
 var clarify = require('clarifyio');
 var clarifyClient = new clarify.Client('api.clarify.io', config.clarify.API_KEY);
+var mailBuilder = require('../mailer/mail-builder');
+var mailer = require('../mailer/mailer');
 
 var notifySlack = function (msg, token, channel) {
   request.get('https://slack.com/api/chat.postMessage', {
@@ -62,13 +64,25 @@ exports.indexNotify = function (req, res) {
 };
 
 exports.transcribeNotify = function (req, res) {
-  var conversation = req.body.segments.map(function(segment){
-    var terms = segment.terms.map(function(item){
-      return item.term;
-    });
-    return segment.speaker + ': ' + terms.join(' ');
-  });
+  Call.findOne({bundle_id: req.body.bundle_id}, function(err, call){
+    if (call) {
+      var conversation = req.body.segments.map(function(segment){
+        var terms = segment.terms.map(function(item){
+          return item.term;
+        });
+        return segment.speaker + ': ' + terms.join(' ');
+      });
 
+      var data = {
+        conversation: conversation,
+        user: call.user
+      };
+      mailBuilder.build('transcribe', data, function(content){
+        var tempEmail = 'vova.kalinkin@gmail.com';
+        mailer.send('Your transcription is ready', content, tempEmail);
+      });
+    }
+  });
   res.sendStatus(200);
 };
 

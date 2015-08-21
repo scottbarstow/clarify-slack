@@ -1,0 +1,16 @@
+<html>
+  <body>
+    <p>
+      Hi {{ user.username }}
+    </p>
+    <p>
+      Your transcription for the media is ready.
+    </p>
+    {{#each conversation}}
+      <p>{{this}}</p>
+    {{/each}}
+    <p>
+      Clarify-Slack
+    </p>
+  </body>
+</html>
