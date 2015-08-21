@@ -10,7 +10,7 @@ exports.index = function(req, res) {
   console.log(req.user);
   Call.find({user: req.user}, function(err, calls){
     console.log(err, calls);
-    res.render('calls/index', {calls: calls, user: req.user});
+    res.render('calls/index', {calls: _.filter(calls, function(i){ return i.from!='indexed'; }), user: req.user});
   });
 };
 

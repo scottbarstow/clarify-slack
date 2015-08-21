@@ -67,7 +67,7 @@ exports.view = function (req, response) {
   var bundleId = req.params.bundleId,
     query = req.params.query;
 
-  clarifyClient.search({query: query, embed: 'metadata'}, function (err, result) {
+  clarifyClient.search({query: query, embed: 'metadata', limit: 20}, function (err, res) {
     if (!err) {
       var bundle = _.first(_.where(res._embedded.items, {id: bundleId}));
       if (bundle) {
