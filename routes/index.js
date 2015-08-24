@@ -95,6 +95,6 @@ router.post('/twilio/call/accepted', function (req, res) {
   twilio.callAccepted(req, res);
 });
 
-router.get('/view/:bundleId/:query', ensureAuthenticated, clarify.view);
+router.get('/view/:bundleId', ensureAuthenticated, clarify.view);
 
 module.exports = router;

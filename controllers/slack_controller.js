@@ -92,6 +92,9 @@ function search(query, req, res) {
         user = req.user;
 
     if (slackInfo.text && slackInfo.text.length > 0) {
+        var theQuery = slackInfo.text.substring(slackInfo.text.indexOf("search")+7);
+        console.log("theQuery:", theQuery);
+        query = query.trim();
         clarifyClient.search({query: query, embed: 'metadata', limit: 20}, function (err, res) {
             if (err) {
                 return res.status(400).send("We couldn't perform a search. Please try again later.");
@@ -123,16 +126,14 @@ function search(query, req, res) {
                             notifySlack('Nothing was found', user.profile.slackToken, slackInfo.channel_id);
                             return;
                         }
-
                         var msg = '*Your search term was found in the following: *\n';
                         _.each(calls, function(call){
-                            console.log(call._id);
+                            var url = encodeURI(config.BASE_URL + '/view/' + call.bundle_id + "?q=" + query);
                             if (call.from != 'indexed'){
-                                msg += '* <' + config.BASE_URL + '/view/' + call.bundle_id + '/' + query + '|Call to ' + call.to + '>';
+                                msg += '* <' + url + '|Call to ' + call.to + '>';
                             } else {
-                                msg += '* <' + config.BASE_URL + '/view/' + call.bundle_id + '/' + query + '|Indexed URL>';
+                                msg += '* <' + url + '|Indexed URL>';
                             }
-
                             _.each(res._embedded.items, function (item, i) {
                                 if (item.external_id == call._id) {
                                     var second = res.item_results[i].term_results[0].matches[0].hits[0].start;
@@ -161,8 +162,8 @@ function transcribe(param, req, res) {
             Authorization: 'Bearer ' + config.clarify.API_KEY
         },
         form: {
-            insight: 'transcript_r9',
-            notify_url: config.BASE_URL + '/clarify/notify/transcribe'
+            insight: 'transcript_r9'
+            //notify_url: config.BASE_URL + '/clarify/notify/transcribe'
         }
     };
     request(options, function (err, res, body) {

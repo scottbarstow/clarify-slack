@@ -21,13 +21,19 @@ var notifySlack = function (msg, token, channel) {
 };
 
 exports.notify = function (req, res) {
-  notify(req, function(call){
-    notifySlack('Your Call ' + call.bundle_id + ' from ' + call.from + ' to ' + call.to + ' has been indexed and is ready for search. Type /clarifyer search to search the audio.',
-        call.user.profile.slackToken,
-        call.slack_channel_id);
-  });
-
-  res.sendStatus(200);
+  console.log("CLARIFY:", req.body)
+  if('insight' in req.body && req.body.insight === 'transcript_r9'){
+    console.log("got insight")
+    transcribeNotify(req,res)
+  }
+  else {
+    notifyCall(req, function(call){
+      notifySlack('Your Call ' + call.bundle_id + ' from ' + call.from + ' to ' + call.to + ' has been indexed and is ready for search. Type /clarifyer search to search the audio.',
+          call.user.profile.slackToken,
+          call.slack_channel_id);
+    });
+    res.sendStatus(200);
+  }
 };
 
 exports.indexNotify = function (req, res) {
@@ -65,7 +71,7 @@ exports.transcribeNotify = function (req, res) {
 
 exports.view = function (req, response) {
   var bundleId = req.params.bundleId,
-    query = req.params.query;
+    query = req.query.q;
 
   clarifyClient.search({query: query, embed: 'metadata', limit: 20}, function (err, res) {
     if (!err) {
@@ -114,7 +120,7 @@ var gatherHits = function (itemResult, terms) {
   return hits;
 };
 
-var notify = function(req, callback){
+var notifyCall = function(req, callback){
   var io = req.app.get('io');
 
   if ('bundle_processing_cost' in req.body) {
