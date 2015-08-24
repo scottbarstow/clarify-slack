@@ -24,9 +24,11 @@ exports.command = function (req, res) {
                 return transcribe(param, req, res);
             case "index":
                 return index(param, req, res);
+            default:
+                res.status(200).send("I'm sorry, I didn't understand that command");
         }
     } else {
-        res.status(400).send("I'm sorry, I don't understand what you're after. Try call or search");
+        res.status(400).send("Doh! Something went wrong");
     }
 };
 
@@ -99,7 +101,7 @@ function search(query, req, res) {
             }
 
             if (res.total==0){
-                notifySlack('Nothing was found', user.profile.slackToken, slackInfo.channel_id);
+                notifySlack("Sorry, we couldn't find any matching records for " + query, user.profile.slackToken, slackInfo.channel_id);
                 return;
             }
 
