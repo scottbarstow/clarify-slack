@@ -92,8 +92,6 @@ function search(query, req, res) {
         user = req.user;
 
     if (slackInfo.text && slackInfo.text.length > 0) {
-        var theQuery = slackInfo.text.substring(slackInfo.text.indexOf("search")+7);
-        console.log("theQuery:", theQuery);
         query = query.trim();
         clarifyClient.search({query: query, embed: 'metadata', limit: 20}, function (err, res) {
             if (err) {
