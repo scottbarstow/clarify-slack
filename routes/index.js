@@ -67,13 +67,15 @@ router.post('/search', ensureAuthenticated, function(req, res){
 router.get('/sign_in', function (req, res) {
   res.render('sign_in', {user: req.user});
 });
+router.post('/sign_in', passport.authenticate('local', {failureRedirect: '/sign_in'}), function (req, res) {
+  res.redirect('/');
+});
+
 router.get('/sign_up', function (req, res) {
   res.render('sign_up');
 });
 router.post('/sign_up', users.signup);
-router.post('/sign_in', passport.authenticate('local', {failureRedirect: '/sign_in'}), function (req, res) {
-  res.redirect('/');
-});
+
 router.get('/sign_out', function (req, res) {
   req.logout();
   res.redirect('/');

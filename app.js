@@ -12,6 +12,7 @@ var config = require('./config');
 var passport = require('passport');
 var session = require('express-session');
 var logger = require('morgan');
+var flash = require('connect-flash');
 
 mongoose.connect(config.mongodb.URI);
 
@@ -32,6 +33,12 @@ app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(flash());
+app.use(function(req, res, next){
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  next();
+});
 
 app.use('/', routes);
 

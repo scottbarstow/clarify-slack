@@ -30,6 +30,17 @@ html
                 a(href='/sign_up') Sign Up
 
     .content
+      if error && error.length > 0
+        .alert.alert-danger.alert-dismissible.fade-in(role="alert")
+          button.close(type="button" data-dismiss="alert" aria-label="Close")
+            span(aria-hidden="true") ×
+          p= error
+      if success && success.length > 0
+        .alert.alert-success.alert-dismissible.fade-in(role="alert")
+          button.close(type="button" data-dismiss="alert" aria-label="Close")
+            span(aria-hidden="true") ×
+          p= success
+
       block content
 
     script(src='/lib/js/jquery.js')

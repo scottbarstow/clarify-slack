@@ -21,6 +21,7 @@
     "body-parser": "^1.13.1",
     "bower": "^1.4.1",
     "clarifyio": "0.0.3",
+    "connect-flash": "^0.1.1",
     "email-templates": "^2.0.1",
     "express": "^4.13.0",
     "express-session": "^1.11.3",
