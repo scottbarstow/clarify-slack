@@ -26,7 +26,7 @@ exports.notifyCall = function (req, res) {
 };
 
 exports.notifyMedia = function (req, res) {
-  notify(req, function(call){
+  handleCall(req, function(call){
     notifySlack('Your audio ' + req.body.bundle_id + ' has been indexed. You can now search',
         call.user.profile.slackToken,
         call.slack_channel_id);
