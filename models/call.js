@@ -15,6 +15,9 @@ var Call = new mongoose.Schema({
   slack_channel_id: {
     type: String
   },
+  slack_user_id: {
+    type: String
+  },
   url: {
     type: String
   },

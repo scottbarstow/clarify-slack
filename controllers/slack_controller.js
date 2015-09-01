@@ -78,6 +78,7 @@ function call(number, req, res) {
           date: Date.now(),
           twilio_sid: call.sid,
           slack_channel_id: slackInfo.channel_id,
+          slack_user_id: slackInfo.user_id,
           user: user
         });
         res.status(200).send('Call has started');

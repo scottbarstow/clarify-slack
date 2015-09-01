@@ -5,7 +5,7 @@ var smtpTransport = require('nodemailer-smtp-transport');
 function Mailer() {
   var transport = nodemailer.createTransport(smtpTransport({
     host: config.SMTP_SERVER,
-    port: 25,
+    port: config.SMTP_PORT,
     auth: {
       user: config.SMTP_LOGIN,
       pass: config.SMTP_PASSWORD
@@ -22,6 +22,8 @@ function Mailer() {
       subject: subject,
       html: content.html,
       text: content.text
+    }, function(err){
+      console.log(err);
     });
   }
 

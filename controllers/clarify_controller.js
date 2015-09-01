@@ -11,7 +11,7 @@ var mailer = require('../mailer/mailer');
 
 exports.notifyCall = function (req, res) {
   console.log("CLARIFY:", req.body)
-  if('insight' in req.body && req.body.insight === 'transcript_r9'){
+  if('name' in req.body && req.body.name === 'transcript_r9'){
     console.log("got insight");
     handleTranscription(req,res);
   }
@@ -21,8 +21,8 @@ exports.notifyCall = function (req, res) {
           call.user.profile.slackToken,
           call.slack_channel_id);
     });
-    res.sendStatus(200);
   }
+  res.sendStatus(200);
 };
 
 exports.notifyMedia = function (req, res) {
@@ -119,7 +119,7 @@ var handleTranscription = function (req, res) {
     .populate('user profile')
     .exec(function(err, call){
       if (call) {
-        var conversation = req.body.segments.map(function(segment){
+        var conversation = req.body.data.transcript.segments.map(function(segment){
           var terms = segment.terms.map(function(item){
             return item.term;
           });
@@ -131,14 +131,13 @@ var handleTranscription = function (req, res) {
           user: call.user
         };
 
-        getSlackProfile(call.user.profile.slackUser, call.user.profile.slackToken, function(user){
-          mailBuilder.build('transcribe', data, function(content){
-            mailer.send('Your transcription is ready', content, user.profile.email);
+        getSlackProfile(call.slack_user_id, call.user.profile.slackToken, function(user){
+          mailBuilder.build('transcribe', data, function(err, content){
+            mailer.send('Your transcription for Call ' + call.bundle_id + ' is ready', content, user.profile.email);
           });
         });
       }
     });
-  res.sendStatus(200);
 };
 
 var notifySlack = function (msg, token, channel) {
@@ -152,11 +151,11 @@ var notifySlack = function (msg, token, channel) {
   });
 };
 
-var getSlackProfile = function(username, token, callback) {
+var getSlackProfile = function(user_id, token, callback) {
   request.get('https://slack.com/api/users.info', {
     qs: {
       token: token,
-      user: username
+      user: user_id
     }
   }, function (err, response, body) {
     var info = JSON.parse(body);
