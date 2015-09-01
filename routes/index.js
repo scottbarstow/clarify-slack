@@ -47,9 +47,8 @@ router.get('/', ensureAuthenticated, function (req, res) {
   calls.index(req, res);
 });
 
-router.post('/clarify/notify', clarify.notify);
-router.post('/clarify/indexNotify', clarify.indexNotify);
-router.post('/clarify/notify/transcribe', clarify.transcribeNotify);
+router.post('/clarify/notify/call', clarify.notifyCall);
+router.post('/clarify/notify/media', clarify.notifyMedia);
 
 router.get('/calls/show/:id', ensureAuthenticated, function (req, res) {
   calls.show(req, res);

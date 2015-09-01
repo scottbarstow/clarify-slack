@@ -28,7 +28,7 @@ exports.callStatus = function(req, res) {
       clarifyClient.createBundle({
         name: call.to,
         media_url: call.url,
-        notify_url: config.BASE_URL + '/clarify/notify',
+        notify_url: config.BASE_URL + '/clarify/notify/call',
         external_id: call._id,
         metadata: JSON.stringify({callId: call._id})
       });

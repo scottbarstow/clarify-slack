@@ -9,25 +9,14 @@ var clarifyClient = new clarify.Client('api.clarify.io', config.clarify.API_KEY)
 var mailBuilder = require('../mailer/mail-builder');
 var mailer = require('../mailer/mailer');
 
-var notifySlack = function (msg, token, channel) {
-  request.get('https://slack.com/api/chat.postMessage', {
-    qs: {
-      token: token,
-      channel: channel,
-      text: msg,
-      username: 'Clarifyer'
-    }
-  });
-};
-
-exports.notify = function (req, res) {
+exports.notifyCall = function (req, res) {
   console.log("CLARIFY:", req.body)
   if('insight' in req.body && req.body.insight === 'transcript_r9'){
-    console.log("got insight")
-    transcribeNotify(req,res)
+    console.log("got insight");
+    handleTranscription(req,res);
   }
   else {
-    notifyCall(req, function(call){
+    handleCall(req, function(call){
       notifySlack('Your Call ' + call.bundle_id + ' from ' + call.from + ' to ' + call.to + ' has been indexed and is ready for search. Type /clarifyer search to search the audio.',
           call.user.profile.slackToken,
           call.slack_channel_id);
@@ -36,36 +25,13 @@ exports.notify = function (req, res) {
   }
 };
 
-exports.indexNotify = function (req, res) {
+exports.notifyMedia = function (req, res) {
   notify(req, function(call){
     notifySlack('Your audio ' + req.body.bundle_id + ' has been indexed. You can now search',
         call.user.profile.slackToken,
         call.slack_channel_id);
   });
 
-  res.sendStatus(200);
-};
-
-exports.transcribeNotify = function (req, res) {
-  Call.findOne({bundle_id: req.body.bundle_id}, function(err, call){
-    if (call) {
-      var conversation = req.body.segments.map(function(segment){
-        var terms = segment.terms.map(function(item){
-          return item.term;
-        });
-        return segment.speaker + ': ' + terms.join(' ');
-      });
-
-      var data = {
-        conversation: conversation,
-        user: call.user
-      };
-      mailBuilder.build('transcribe', data, function(content){
-        var tempEmail = 'vova.kalinkin@gmail.com';
-        mailer.send('Your transcription is ready', content, tempEmail);
-      });
-    }
-  });
   res.sendStatus(200);
 };
 
@@ -120,7 +86,7 @@ var gatherHits = function (itemResult, terms) {
   return hits;
 };
 
-var notifyCall = function(req, callback){
+var handleCall = function(req, callback){
   var io = req.app.get('io');
 
   if ('bundle_processing_cost' in req.body) {
@@ -146,4 +112,38 @@ var notifyCall = function(req, callback){
           }
         });
   }
+};
+
+var handleTranscription = function (req, res) {
+  Call.findOne({bundle_id: req.body.bundle_id}, function(err, call){
+    if (call) {
+      var conversation = req.body.segments.map(function(segment){
+        var terms = segment.terms.map(function(item){
+          return item.term;
+        });
+        return segment.speaker + ': ' + terms.join(' ');
+      });
+
+      var data = {
+        conversation: conversation,
+        user: call.user
+      };
+      mailBuilder.build('transcribe', data, function(content){
+        var tempEmail = 'vova.kalinkin@gmail.com';
+        mailer.send('Your transcription is ready', content, tempEmail);
+      });
+    }
+  });
+  res.sendStatus(200);
+};
+
+var notifySlack = function (msg, token, channel) {
+  request.get('https://slack.com/api/chat.postMessage', {
+    qs: {
+      token: token,
+      channel: channel,
+      text: msg,
+      username: 'Clarifyer'
+    }
+  });
 };
