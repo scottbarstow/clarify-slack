@@ -16,7 +16,7 @@ exports.notifyCall = function (req, res) {
     handleTranscription(req,res);
   }
   else {
-    handleCall(req, function(call){
+    handleNotification(req, function(call){
       notifySlack('Your Call ' + call.bundle_id + ' from ' + call.from + ' to ' + call.to + ' has been indexed and is ready for search. Type /clarifyer search to search the audio.',
           call.user.profile.slackToken,
           call.slack_channel_id);
@@ -26,7 +26,7 @@ exports.notifyCall = function (req, res) {
 };
 
 exports.notifyMedia = function (req, res) {
-  handleCall(req, function(call){
+  handleNotification(req, function(call){
     notifySlack('Your audio ' + req.body.bundle_id + ' has been indexed. You can now search',
         call.user.profile.slackToken,
         call.slack_channel_id);
@@ -86,7 +86,7 @@ var gatherHits = function (itemResult, terms) {
   return hits;
 };
 
-var handleCall = function(req, callback){
+var handleNotification = function(req, callback){
   var io = req.app.get('io');
 
   if ('bundle_processing_cost' in req.body) {
