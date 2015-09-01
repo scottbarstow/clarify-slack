@@ -154,21 +154,30 @@ function search(query, req, res) {
 }
 
 function transcribe(param, req, res) {
-  var options = {
-    url: 'https://api.clarify.io/v1/bundles/' + param + '/insights',
-    method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + config.clarify.API_KEY
-    },
-    form: {
-      insight: 'transcript_r9'
-    }
-  };
-  request(options, function (err, res, body) {
-    if (err) {
-      console.log(err);
+  Call.findOne({bundle_id: param, user: req.user}, function(err, call){
+    if (call) {
+      var options = {
+        url: 'https://api.clarify.io/v1/bundles/' + param + '/insights',
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + config.clarify.API_KEY
+        },
+        form: {
+          insight: 'transcript_r9'
+        }
+      };
+      request(options, function (err, response, body) {
+        var result = JSON.parse(body);
+        if (err) {
+          res.status(400).send(err);
+        } else {
+          res.status(200).send("You've successfully sent Call " + param + " to Clarify for transcription. " +
+            "Current status of the operation is '" + result.status + "'. " +
+            "You will be notified about results of transcription by email.");
+        }
+      });
     } else {
-      console.log(body);
+      res.status(404).send('Call not found.');
     }
   });
 }
