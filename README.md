@@ -7,9 +7,6 @@ The app also allows you to search the contents of previous recordings, request a
 ## Prerequisites
 `sudo npm install -g grunt-cli`
 
-## Installation
-1. `grunt install`
-2. `grunt seed` to create the default admin user. Username 'admin', password 'admin'
 
 ## Configuration
 1. Copy config.example.js to config.js
@@ -17,6 +14,13 @@ The app also allows you to search the contents of previous recordings, request a
 3. Set your Twilio API credentials, and add a purchased phone number from Twilio to the PHONE section of the Twilio config.
 4. You'll need to get an API token from Slack (see instructions below). We made a choice not to use oAuth for purposes of this demo app to keep the configuration simpler.
 5. Configure the mail server settings if you want to have transcribed audio emailed to you.
+
+
+## Installation
+1. `grunt install`
+2. `bower install`
+
+This will create a user called admin with password of admin in the db you specify in config.
 
 ## Running
 `grunt`

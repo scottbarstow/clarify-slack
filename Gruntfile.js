@@ -120,5 +120,5 @@ module.exports = function(grunt) {
   var seed = require('./tasks/seed');
   grunt.task.registerTask('seed', 'Seeds default data', seed);
 
-  grunt.registerTask('install', ['npm-install', 'bower:install', 'seed']);
+  grunt.registerTask('install', ['npm-install', 'seed']);
 };
