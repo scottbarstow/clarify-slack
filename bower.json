@@ -2,7 +2,7 @@
   "name": "clarify-slack",
   "version": "0.0.1",
   "homepage": "https://github.com/scottbarstow/clarify-slack",
-  "license": "none",
+  "license": "MIT",
   "private": true,
   "ignore": [
     "**/.*",
