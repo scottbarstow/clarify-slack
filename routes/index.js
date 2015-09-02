@@ -25,13 +25,6 @@ var ensureAuthenticatedAjax = function (req, res, next) {
   res.status(401).json('User is not authorized.');
 };
 
-var authSlackTeam = function (req, res, next) {
-  if (req.body.token === config.slack.TOKEN) {
-    return next();
-  }
-  res.status(401).json('Slack Team is not authorized');
-};
-
 var authSlackUser = function(req, res, next) {
   User.findOne({'profile.slackUser': req.body.user_name}, function(err, user){
     if (user) {
@@ -84,7 +77,7 @@ router.get('/sign_out', function (req, res) {
 router.get('/profile', ensureAuthenticated, users.profile);
 router.post('/profile', ensureAuthenticated, users.saveProfile);
 
-router.post('/slack/command', authSlackTeam, authSlackUser, slack.command);
+router.post('/slack/command', authSlackUser, slack.command);
 
 router.post('/twilio/call/status', function (req, res) {
   twilio.callStatus(req, res);
